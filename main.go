@@ -4,9 +4,9 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -42,13 +42,11 @@ Flags:
 	if flag.NArg() > 0 {
 		text = strings.Join(flag.Args(), " ")
 	} else {
-		var sb strings.Builder
-		sc := bufio.NewScanner(os.Stdin)
-		for sc.Scan() {
-			sb.WriteString(sc.Text())
-			sb.WriteByte('\n')
+		in, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			fatal(err)
 		}
-		text = sb.String()
+		text = string(in)
 	}
 	if strings.TrimSpace(text) == "" {
 		flag.Usage()

@@ -25,10 +25,19 @@ func writeWAV(w io.Writer, sampleRate int, samples []int16) error {
 	if _, err := w.Write(hdr[:]); err != nil {
 		return err
 	}
-	buf := make([]byte, len(samples)*2)
-	for i, s := range samples {
-		binary.LittleEndian.PutUint16(buf[i*2:], uint16(s))
+	buf := make([]byte, 32*1024)
+	for len(samples) > 0 {
+		n := len(buf) / 2
+		if n > len(samples) {
+			n = len(samples)
+		}
+		for i, s := range samples[:n] {
+			binary.LittleEndian.PutUint16(buf[i*2:], uint16(s))
+		}
+		if _, err := w.Write(buf[:n*2]); err != nil {
+			return err
+		}
+		samples = samples[n:]
 	}
-	_, err := w.Write(buf)
-	return err
+	return nil
 }
