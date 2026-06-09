@@ -31,3 +31,10 @@ go.work.sum
 # .idea/
 # .vscode/
 *.wav
+
+# Built CLI binary
+/govor
+
+# Built web artifacts (produced by the deploy workflow)
+/web/govor.wasm
+/web/wasm_exec.js
