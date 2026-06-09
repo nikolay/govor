@@ -38,6 +38,10 @@ Flags:
 	}
 	flag.Parse()
 
+	if *rate <= 0 {
+		fatal(fmt.Errorf("-rate must be > 0, got %d", *rate))
+	}
+
 	var text string
 	if flag.NArg() > 0 {
 		text = strings.Join(flag.Args(), " ")
