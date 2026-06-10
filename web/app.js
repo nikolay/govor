@@ -23,10 +23,12 @@ const STR = {
   bg: {
     loading: "зареждане…", speak: "говори", error: "грешка — презареди страницата",
     play: "пусни", pause: "пауза", download: "⤓ свали .wav", seek: "позиция в записа",
+    placeholder: "здравей, аз съм правец 82",
   },
   en: {
     loading: "loading…", speak: "speak", error: "error — reload the page",
     play: "play", pause: "pause", download: "⤓ download .wav", seek: "playback position",
+    placeholder: "type Bulgarian text, e.g. здравей свят",
   },
 };
 let lang = location.hash === "#en" ? "en" : "bg";
@@ -43,8 +45,13 @@ function applyLang(l, updateHash) {
   document.documentElement.lang = l;
   document.body.dataset.lang = l;
   if (updateHash) history.replaceState(null, "", "#" + l);
-  document.getElementById("lang-bg").classList.toggle("active", l === "bg");
-  document.getElementById("lang-en").classList.toggle("active", l === "en");
+  const bgBtn = document.getElementById("lang-bg");
+  const enBtn = document.getElementById("lang-en");
+  bgBtn.classList.toggle("active", l === "bg");
+  enBtn.classList.toggle("active", l === "en");
+  bgBtn.setAttribute("aria-pressed", String(l === "bg"));
+  enBtn.setAttribute("aria-pressed", String(l === "en"));
+  textEl.placeholder = STR[l].placeholder;
   download.textContent = STR[l].download;
   seek.setAttribute("aria-label", STR[l].seek);
   playpause.setAttribute("aria-label", STR[l][player.paused ? "play" : "pause"]);

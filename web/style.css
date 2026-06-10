@@ -69,7 +69,8 @@ h1 {
   opacity: 0.5;
   image-rendering: pixelated;
 }
-.lang button:hover { background: transparent; opacity: 0.85; }
+/* .crt prefix outranks the later global button:hover:not(:disabled) rule */
+.crt .lang button:hover { background: transparent; opacity: 0.85; }
 .lang button.active {
   border-color: var(--fg);
   opacity: 1;
