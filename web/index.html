@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>говор — българска говореща програма (1980s Apple II / Правец-82)</title>
+<meta name="description" content="Говореща програма от Борислав Захариев — Bulgarian text-to-speech from a 1980s Apple II / Правец-82 disk, running in your browser via WebAssembly.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🔊</text></svg>">
+</head>
+<body>
+<main class="crt">
+  <header>
+    <h1>] говор<span class="cursor">█</span></h1>
+    <p class="subtitle">Говореща програма от <strong>Борислав Захариев</strong> —
+    Bulgarian text-to-speech for the Apple&nbsp;II / Правец-82, recovered from a
+    1980s floppy disk and replayed cycle-for-cycle in your browser.</p>
+  </header>
+
+  <section class="panel">
+    <label for="text">&"ТЕКСТ"</label>
+    <textarea id="text" rows="3" spellcheck="false"
+      placeholder="здравей, аз съм правец 82">здравей, аз съм говореща програма</textarea>
+
+    <div class="controls">
+      <label class="speed">
+        &<span id="speedval">5</span> скорост
+        <input type="range" id="speed" min="1" max="9" step="1" value="5">
+        <span class="hint">1 = бързо/високо · 9 = бавно/ниско</span>
+      </label>
+      <button id="speak" disabled>зареждане…</button>
+      <a id="download" class="button" download="govor.wav" hidden>⤓ свали .wav</a>
+    </div>
+
+    <canvas id="wave" width="800" height="96" hidden></canvas>
+    <audio id="player" controls hidden></audio>
+  </section>
+
+  <section class="examples">
+    <span>проба:</span>
+    <button class="ex">здравей свят</button>
+    <button class="ex">2 + 2 = 4</button>
+    <button class="ex">/ра:бо/та</button>
+    <button class="ex">*</button>
+  </section>
+
+  <section class="help">
+    <h2>&I информация</h2>
+    <table>
+      <tr><td>а-я А-Я</td><td>изговаря се с оригиналните звуци от 1980-те</td></tr>
+      <tr><td>интервал</td><td>пауза между думи; <code>,</code> — двойна, <code>_</code> — кратка</td></tr>
+      <tr><td>0-9</td><td>нула, едно, две … девет</td></tr>
+      <tr><td><code>+ - = . *</code></td><td>плюс, минус, равно, точка, хахаха</td></tr>
+      <tr><td><code>/</code> <code>:</code></td><td>повишава / понижава интонацията на следващата буква</td></tr>
+      <tr><td>друго</td><td>игнорира се</td></tr>
+    </table>
+    <p>The sound is not a recording: the original 6502 player toggled the
+    Apple&nbsp;II's 1-bit speaker with stored delays between clicks. This page runs
+    the same algorithm and the exact waveform data from the disk, compiled to
+    WebAssembly from the <a href="https://github.com/nikolay/govor">Go port</a> —
+    see the <a href="https://github.com/nikolay/govor/blob/main/docs/REVERSING.md">reverse-engineering notes</a>.</p>
+  </section>
+
+  <footer>
+    <p>© 1980s Борислав Захариев · port &amp; site:
+    <a href="https://github.com/nikolay/govor">github.com/nikolay/govor</a></p>
+  </footer>
+</main>
+<script src="wasm_exec.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

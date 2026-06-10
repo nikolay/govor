@@ -1,3 +1,5 @@
+//go:build !js
+
 // govor is a Go port of „Говореща програма“ — a Bulgarian text-to-speech
 // program for the Apple II / Правец-82 by Борислав Захариев, recovered from
 // an original DOS 3.3 disk image (see original/GOVOR.dsk and docs/).
