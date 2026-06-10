@@ -1,6 +1,7 @@
 # govor
 
-Говореща програма от Борислав Захариев — a 1980s Bulgarian text-to-speech
+Говореща програма от [Борислав Захариев](https://github.com/borislavzahariev) —
+a 1980s Bulgarian text-to-speech
 program for the Apple II / Правец-82, recovered from an original DOS 3.3 disk
 image and ported to Go.
 
