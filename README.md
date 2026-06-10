@@ -2,7 +2,7 @@
 
 Говореща програма от [Борислав Захариев](https://github.com/borislavzahariev) —
 a 1980s Bulgarian text-to-speech
-program for the Apple II / Правец-82, recovered from an original DOS 3.3 disk
+program for the Apple II / Правец 82, recovered from an original DOS 3.3 disk
 image and ported to Go.
 
 The original is ~6 KB of 6502 machine code hiding behind a one-line Applesoft

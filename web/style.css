@@ -1,4 +1,4 @@
-/* Green-phosphor terminal look, in the spirit of a Правец-82 monitor. */
+/* Green-phosphor terminal look, in the spirit of a Правец 82 monitor. */
 
 :root {
   --bg: #0a0f0a;
@@ -50,7 +50,7 @@ h1 {
   font-size: clamp(1.3rem, 4.4vw, 2.1rem);
   margin: 0 0 0.5rem;
   letter-spacing: 0.03em;
-  /* the Правец-82 displays Cyrillic uppercase-only, ]ГОВОР with no space */
+  /* the Правец 82 displays Cyrillic uppercase-only, ]ГОВОР with no space */
   text-transform: uppercase;
   text-shadow: 0 0 12px rgba(51, 255, 102, 0.45);
 }

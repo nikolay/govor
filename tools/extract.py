@@ -10,7 +10,7 @@ The pieces we need for the Go port:
                  little-endian (start, end) addresses of the waveform segment
   * $0C00-$1DFF  waveform data (speaker delay streams)
   * $0AF0-$0B6F  spoken words for '*' '+' ',' '-' '.' '/' and digits 0-9,
-                 8 bytes per slot, KOI-7 N2 (Pravetz-82) Cyrillic codes
+                 8 bytes per slot, KOI-7 N2 (Pravetz 82) Cyrillic codes
 
 Usage: python3 tools/extract.py original/GOVOR.dsk | gofmt > data.go
 """
@@ -87,7 +87,7 @@ def main():
         print(f'\t{row}, // ${DATA_BASE + i:04X}')
     print('}')
     print()
-    print('// segments maps Pravetz-82 character codes $5B-$7F to [start, end)')
+    print('// segments maps Pravetz 82 character codes $5B-$7F to [start, end)')
     print('// offsets within soundData (original table at $0B70).')
     print('var segments = map[byte]segment{')
     names = {0x5B: 'ш', 0x5C: 'э (unused/broken in original)', 0x5D: 'щ (= ш + т)',
