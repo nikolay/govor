@@ -13,10 +13,15 @@ let blobURL = null;
 
 async function loadWasm() {
   const go = new Go();
-  const src = fetch("govor.wasm");
-  const result = WebAssembly.instantiateStreaming
-    ? await WebAssembly.instantiateStreaming(src, go.importObject)
-    : await WebAssembly.instantiate(await (await src).arrayBuffer(), go.importObject);
+  let result;
+  try {
+    result = await WebAssembly.instantiateStreaming(fetch("govor.wasm"), go.importObject);
+  } catch (e) {
+    // Some servers (e.g. older local dev ones) don't send application/wasm,
+    // which makes instantiateStreaming throw; fall back to a buffered load.
+    const buf = await (await fetch("govor.wasm")).arrayBuffer();
+    result = await WebAssembly.instantiate(buf, go.importObject);
+  }
   go.run(result.instance); // registers govorSynth, then parks in select{}
   speakBtn.disabled = false;
   speakBtn.textContent = "говори";

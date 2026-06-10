@@ -16,6 +16,12 @@ import (
 
 func main() {
 	js.Global().Set("govorSynth", js.FuncOf(func(this js.Value, args []js.Value) any {
+		// This is a global JS API: validate the call instead of panicking,
+		// which would kill the WASM instance for the rest of the page's life.
+		if len(args) < 3 || args[0].Type() != js.TypeString ||
+			args[1].Type() != js.TypeNumber || args[2].Type() != js.TypeNumber {
+			return js.Null()
+		}
 		text := args[0].String()
 		speed := args[1].Int()
 		rate := args[2].Int()
