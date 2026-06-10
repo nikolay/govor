@@ -28,8 +28,18 @@ function speak() {
     textEl.focus();
     return;
   }
-  const wav = govorSynth(text, parseInt(speedEl.value, 10), RATE);
-  if (!wav) return;
+  let wav = null;
+  try {
+    wav = govorSynth(text, parseInt(speedEl.value, 10), RATE);
+  } catch (err) {
+    // Thrown when the Go runtime has exited; only a reload restarts it.
+    console.error(err);
+  }
+  if (!wav) {
+    speakBtn.disabled = true;
+    speakBtn.textContent = "грешка — презареди страницата";
+    return;
+  }
 
   if (blobURL) URL.revokeObjectURL(blobURL);
   blobURL = URL.createObjectURL(new Blob([wav], { type: "audio/wav" }));
