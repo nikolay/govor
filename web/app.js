@@ -137,7 +137,7 @@ player.addEventListener("play", () => {
 });
 player.addEventListener("pause", () => {
   playpause.textContent = "►";
-  playpause.setAttribute("aria-label", "играй");
+  playpause.setAttribute("aria-label", "пусни");
   playpause.setAttribute("aria-pressed", "false");
   paint();
 });
