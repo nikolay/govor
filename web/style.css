@@ -44,6 +44,8 @@ h1 {
   font-size: 2.6rem;
   margin: 0 0 0.5rem;
   letter-spacing: 0.05em;
+  /* the Правец-82 displays Cyrillic uppercase-only, ]ГОВОР with no space */
+  text-transform: uppercase;
   text-shadow: 0 0 12px rgba(51, 255, 102, 0.45);
 }
 
