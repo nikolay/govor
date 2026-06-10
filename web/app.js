@@ -7,9 +7,15 @@ const speedVal = document.getElementById("speedval");
 const player = document.getElementById("player");
 const download = document.getElementById("download");
 const wave = document.getElementById("wave");
+const transport = document.getElementById("transport");
+const playpause = document.getElementById("playpause");
+const timeEl = document.getElementById("time");
+const seek = document.getElementById("seek");
 
 const RATE = 44100;
 let blobURL = null;
+let waveImage = null; // cached waveform pixels, replayed under the playhead
+let duration = 0; // seconds; from the sample count, available before metadata
 
 async function loadWasm() {
   const go = new Go();
@@ -50,11 +56,10 @@ function speak() {
   blobURL = URL.createObjectURL(new Blob([wav], { type: "audio/wav" }));
 
   player.src = blobURL;
-  player.hidden = false;
   player.play();
 
   download.href = blobURL;
-  download.hidden = false;
+  transport.hidden = false;
 
   drawWave(wav);
 }
@@ -63,14 +68,22 @@ function speak() {
 // WAV header.
 function drawWave(wav) {
   // wav.go always writes a canonical 44-byte header with the "data" chunk id
-  // at byte 36; if that ever changes, skip the (purely cosmetic) drawing
-  // rather than render garbage.
-  if (String.fromCharCode(wav[36], wav[37], wav[38], wav[39]) !== "data") return;
+  // at byte 36; if that ever changes, drop the (purely cosmetic) waveform —
+  // including any previous one — rather than render or keep stale pixels.
+  if (String.fromCharCode(wav[36], wav[37], wav[38], wav[39]) !== "data") {
+    waveImage = null;
+    duration = 0;
+    wave.hidden = true;
+    return;
+  }
   const samples = new Int16Array(wav.buffer, wav.byteOffset + 44, (wav.length - 44) >> 1);
-  const ctx = wave.getContext("2d");
-  const { width: w, height: h } = wave;
-  wave.hidden = false;
-  ctx.clearRect(0, 0, w, h);
+  duration = samples.length / RATE;
+  seek.max = duration;
+  const off = document.createElement("canvas");
+  off.width = wave.width;
+  off.height = wave.height;
+  const ctx = off.getContext("2d");
+  const { width: w, height: h } = off;
   ctx.fillStyle = "#33ff66";
   const step = samples.length / w;
   for (let x = 0; x < w; x++) {
@@ -84,7 +97,69 @@ function drawWave(wav) {
     const y2 = (0.5 - min / 65536) * h;
     ctx.fillRect(x, y1, 1, Math.max(1, y2 - y1));
   }
+  waveImage = off;
+  wave.hidden = false;
+  paint();
 }
+
+// Repaint the waveform with the playhead at the current position.
+function paint() {
+  timeEl.textContent = player.currentTime.toFixed(1) + " s";
+  seek.value = player.currentTime;
+  if (!waveImage) return;
+  const ctx = wave.getContext("2d");
+  ctx.clearRect(0, 0, wave.width, wave.height);
+  ctx.drawImage(waveImage, 0, 0);
+  if (duration > 0) {
+    const x = Math.min(wave.width - 1, (player.currentTime / duration) * wave.width);
+    ctx.fillStyle = "#aaffc3";
+    ctx.fillRect(x, 0, 2, wave.height);
+  }
+}
+
+let rafId = 0;
+function tick() {
+  paint();
+  if (!player.paused) rafId = requestAnimationFrame(tick);
+}
+
+playpause.addEventListener("click", () => {
+  if (player.paused) player.play(); else player.pause();
+});
+player.addEventListener("play", () => {
+  playpause.textContent = "❚❚";
+  playpause.setAttribute("aria-label", "пауза");
+  playpause.setAttribute("aria-pressed", "true");
+  // Reassigning player.src pauses without firing a pause event, so an old
+  // tick loop may still be scheduled; cancel it to keep a single loop.
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(tick);
+});
+player.addEventListener("pause", () => {
+  playpause.textContent = "►";
+  playpause.setAttribute("aria-label", "пусни");
+  playpause.setAttribute("aria-pressed", "false");
+  paint();
+});
+player.addEventListener("ended", () => {
+  player.currentTime = 0;
+  paint();
+});
+wave.addEventListener("click", (e) => {
+  // Seeking needs loaded metadata (readyState >= HAVE_METADATA); setting
+  // currentTime earlier throws in some browsers.
+  if (!duration || player.readyState < 1) return;
+  const rect = wave.getBoundingClientRect();
+  const t = ((e.clientX - rect.left) / rect.width) * duration;
+  player.currentTime = Math.min(Math.max(t, 0), duration);
+  paint();
+});
+seek.addEventListener("input", () => {
+  // Keyboard/screen-reader seek path; same metadata guard as the canvas.
+  if (!duration || player.readyState < 1) return;
+  player.currentTime = Math.min(Math.max(parseFloat(seek.value), 0), duration);
+  paint();
+});
 
 speakBtn.addEventListener("click", speak);
 textEl.addEventListener("keydown", (e) => {

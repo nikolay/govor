@@ -29,11 +29,16 @@
         <span class="hint">1 = бързо/високо · 9 = бавно/ниско</span>
       </label>
       <button id="speak" disabled>зареждане…</button>
-      <a id="download" class="button" download="govor.wav" hidden>⤓ свали .wav</a>
     </div>
 
     <canvas id="wave" width="800" height="96" hidden></canvas>
-    <audio id="player" controls hidden></audio>
+    <div class="transport" id="transport" hidden>
+      <button id="playpause" aria-label="пусни" aria-pressed="false">►</button>
+      <span id="time">0.0&thinsp;s</span>
+      <input type="range" id="seek" min="0" max="1" step="0.1" value="0" aria-label="позиция в записа">
+      <a id="download" class="button" download="govor.wav">⤓ свали .wav</a>
+    </div>
+    <audio id="player" hidden></audio>
   </section>
 
   <section class="examples">

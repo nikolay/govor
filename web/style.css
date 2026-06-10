@@ -110,9 +110,23 @@ canvas {
   background: var(--bg);
   border: 1px solid var(--faint);
   border-radius: 4px;
+  cursor: pointer; /* click to seek */
 }
 
-audio { width: 100%; margin-top: 0.75rem; filter: invert(1) hue-rotate(135deg); }
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+#playpause {
+  min-width: 3.2rem;
+  padding: 0.45rem 0;
+  font-size: 1rem;
+}
+#time { color: var(--dim); min-width: 4.5rem; }
+.transport input[type="range"] { flex: 1; width: auto; }
+.transport .button { margin-left: auto; }
 
 .examples {
   margin: 1.25rem 0;
