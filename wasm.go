@@ -19,7 +19,9 @@ func main() {
 		text := args[0].String()
 		speed := args[1].Int()
 		rate := args[2].Int()
-		if rate <= 0 {
+		// Clamp to the range real audio hardware uses; an absurd rate would
+		// just be a giant allocation that kills the WASM instance.
+		if rate < 8000 || rate > 192000 {
 			rate = 44100
 		}
 		s := NewSynth(rate, speed)
