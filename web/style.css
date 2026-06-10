@@ -11,6 +11,10 @@
 
 * { box-sizing: border-box; }
 
+/* Author display rules outrank the UA's [hidden] style; keep the attribute
+   authoritative for every element, present and future. */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -148,7 +152,6 @@ canvas {
   cursor: pointer; /* click to seek */
 }
 
-.transport[hidden] { display: none; }
 .transport {
   display: flex;
   align-items: center;
