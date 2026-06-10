@@ -44,14 +44,13 @@ h1 {
   font-size: 2.6rem;
   margin: 0 0 0.5rem;
   letter-spacing: 0.05em;
+  /* the Правец-82 displays Cyrillic uppercase-only, ]ГОВОР with no space */
+  text-transform: uppercase;
   text-shadow: 0 0 12px rgba(51, 255, 102, 0.45);
 }
 
 .cursor { animation: blink 1.1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
-
-/* Apple II prompt: no space after "]", just half a character cell of air */
-.prompt { margin-right: 0.5ch; }
 
 .subtitle { color: var(--dim); line-height: 1.5; margin: 0 0 1.5rem; }
 .subtitle strong { color: var(--fg); font-weight: normal; }
