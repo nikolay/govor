@@ -57,6 +57,10 @@ function speak() {
 // Draw the synthesized waveform: 16-bit mono PCM starts after the 44-byte
 // WAV header.
 function drawWave(wav) {
+  // wav.go always writes a canonical 44-byte header with the "data" chunk id
+  // at byte 36; if that ever changes, skip the (purely cosmetic) drawing
+  // rather than render garbage.
+  if (String.fromCharCode(wav[36], wav[37], wav[38], wav[39]) !== "data") return;
   const samples = new Int16Array(wav.buffer, wav.byteOffset + 44, (wav.length - 44) >> 1);
   const ctx = wave.getContext("2d");
   const { width: w, height: h } = wave;
