@@ -29,11 +29,15 @@
         <span class="hint">1 = бързо/високо · 9 = бавно/ниско</span>
       </label>
       <button id="speak" disabled>зареждане…</button>
-      <a id="download" class="button" download="govor.wav" hidden>⤓ свали .wav</a>
     </div>
 
     <canvas id="wave" width="800" height="96" hidden></canvas>
-    <audio id="player" controls hidden></audio>
+    <div class="transport" id="transport" hidden>
+      <button id="playpause" title="играй / пауза">►</button>
+      <span id="time">0.0&thinsp;s</span>
+      <a id="download" class="button" download="govor.wav">⤓ свали .wav</a>
+    </div>
+    <audio id="player" hidden></audio>
   </section>
 
   <section class="examples">
