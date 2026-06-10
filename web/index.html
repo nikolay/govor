@@ -7,14 +7,20 @@
 <meta name="description" content="Говореща програма от Борислав Захариев — Bulgarian text-to-speech from a 1980s Apple II / Правец-82 disk, running in your browser via WebAssembly.">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🔊</text></svg>">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-37NJCJ2YJH"></script>
+<!-- Google tag (gtag.js); skipped on local dev hosts to keep GA data clean -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-37NJCJ2YJH');
+
+  if (!["localhost", "127.0.0.1", "[::1]", ""].includes(location.hostname)) {
+    var gtagScript = document.createElement("script");
+    gtagScript.async = true;
+    gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=G-37NJCJ2YJH";
+    document.head.appendChild(gtagScript);
+  }
 </script>
 </head>
 <body>
