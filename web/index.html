@@ -33,8 +33,9 @@
 
     <canvas id="wave" width="800" height="96" hidden></canvas>
     <div class="transport" id="transport" hidden>
-      <button id="playpause" title="играй / пауза">►</button>
+      <button id="playpause" aria-label="играй" aria-pressed="false">►</button>
       <span id="time">0.0&thinsp;s</span>
+      <input type="range" id="seek" min="0" max="1" step="0.1" value="0" aria-label="позиция в записа">
       <a id="download" class="button" download="govor.wav">⤓ свали .wav</a>
     </div>
     <audio id="player" hidden></audio>

@@ -125,6 +125,7 @@ canvas {
   font-size: 1rem;
 }
 #time { color: var(--dim); min-width: 4.5rem; }
+.transport input[type="range"] { flex: 1; width: auto; }
 .transport .button { margin-left: auto; }
 
 .examples {

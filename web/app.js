@@ -10,6 +10,7 @@ const wave = document.getElementById("wave");
 const transport = document.getElementById("transport");
 const playpause = document.getElementById("playpause");
 const timeEl = document.getElementById("time");
+const seek = document.getElementById("seek");
 
 const RATE = 44100;
 let blobURL = null;
@@ -67,11 +68,17 @@ function speak() {
 // WAV header.
 function drawWave(wav) {
   // wav.go always writes a canonical 44-byte header with the "data" chunk id
-  // at byte 36; if that ever changes, skip the (purely cosmetic) drawing
-  // rather than render garbage.
-  if (String.fromCharCode(wav[36], wav[37], wav[38], wav[39]) !== "data") return;
+  // at byte 36; if that ever changes, drop the (purely cosmetic) waveform —
+  // including any previous one — rather than render or keep stale pixels.
+  if (String.fromCharCode(wav[36], wav[37], wav[38], wav[39]) !== "data") {
+    waveImage = null;
+    duration = 0;
+    wave.hidden = true;
+    return;
+  }
   const samples = new Int16Array(wav.buffer, wav.byteOffset + 44, (wav.length - 44) >> 1);
   duration = samples.length / RATE;
+  seek.max = duration;
   const off = document.createElement("canvas");
   off.width = wave.width;
   off.height = wave.height;
@@ -97,6 +104,8 @@ function drawWave(wav) {
 
 // Repaint the waveform with the playhead at the current position.
 function paint() {
+  timeEl.textContent = player.currentTime.toFixed(1) + " s";
+  seek.value = player.currentTime;
   if (!waveImage) return;
   const ctx = wave.getContext("2d");
   ctx.clearRect(0, 0, wave.width, wave.height);
@@ -106,12 +115,12 @@ function paint() {
     ctx.fillStyle = "#aaffc3";
     ctx.fillRect(x, 0, 2, wave.height);
   }
-  timeEl.textContent = player.currentTime.toFixed(1) + " s";
 }
 
+let rafId = 0;
 function tick() {
   paint();
-  if (!player.paused) requestAnimationFrame(tick);
+  if (!player.paused) rafId = requestAnimationFrame(tick);
 }
 
 playpause.addEventListener("click", () => {
@@ -119,10 +128,17 @@ playpause.addEventListener("click", () => {
 });
 player.addEventListener("play", () => {
   playpause.textContent = "❚❚";
-  requestAnimationFrame(tick);
+  playpause.setAttribute("aria-label", "пауза");
+  playpause.setAttribute("aria-pressed", "true");
+  // Reassigning player.src pauses without firing a pause event, so an old
+  // tick loop may still be scheduled; cancel it to keep a single loop.
+  cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(tick);
 });
 player.addEventListener("pause", () => {
   playpause.textContent = "►";
+  playpause.setAttribute("aria-label", "играй");
+  playpause.setAttribute("aria-pressed", "false");
   paint();
 });
 player.addEventListener("ended", () => {
@@ -130,9 +146,18 @@ player.addEventListener("ended", () => {
   paint();
 });
 wave.addEventListener("click", (e) => {
-  if (!duration) return;
+  // Seeking needs loaded metadata (readyState >= HAVE_METADATA); setting
+  // currentTime earlier throws in some browsers.
+  if (!duration || player.readyState < 1) return;
   const rect = wave.getBoundingClientRect();
-  player.currentTime = ((e.clientX - rect.left) / rect.width) * duration;
+  const t = ((e.clientX - rect.left) / rect.width) * duration;
+  player.currentTime = Math.min(Math.max(t, 0), duration);
+  paint();
+});
+seek.addEventListener("input", () => {
+  // Keyboard/screen-reader seek path; same metadata guard as the canvas.
+  if (!duration || player.readyState < 1) return;
+  player.currentTime = Math.min(Math.max(parseFloat(seek.value), 0), duration);
   paint();
 });
 
