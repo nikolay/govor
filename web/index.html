@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>говор — българска говореща програма (1980s Apple II / Правец-82)</title>
 <meta name="description" content="Говореща програма от Борислав Захариев — Bulgarian text-to-speech from a 1980s Apple II / Правец-82 disk, running in your browser via WebAssembly.">
+<!-- Social sharing: Facebook & LinkedIn read Open Graph, X reads twitter:* -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://govor.app/">
+<meta property="og:title" content="говор — българска говореща програма (1980s Apple II / Правец-82)">
+<meta property="og:description" content="Говореща програма от Борислав Захариев — Bulgarian text-to-speech from a 1980s Apple II / Правец-82 disk, running in your browser via WebAssembly.">
+<meta property="og:image" content="https://govor.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="bg_BG">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="говор — българска говореща програма (1980s Apple II / Правец-82)">
+<meta name="twitter:description" content="Bulgarian text-to-speech from a 1980s Apple II / Правец-82 disk, running in your browser via WebAssembly.">
+<meta name="twitter:image" content="https://govor.app/og.png">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🔊</text></svg>">
 <!-- Google tag (gtag.js); skipped on local dev hosts to keep GA data clean -->
@@ -25,11 +39,41 @@
   }
 </script>
 </head>
-<body>
+<body data-lang="bg">
 <main class="crt">
   <header>
-    <h1>]говор<span class="cursor">█</span></h1>
-    <p class="subtitle">Говореща програма от
+    <div class="lang" role="group" aria-label="език / language">
+      <button id="lang-bg" class="active" aria-label="български" title="български">
+        <svg viewBox="0 0 21 14" width="30" height="20" shape-rendering="crispEdges" aria-hidden="true">
+          <rect width="21" height="5" y="0" fill="#e8e8e8"/>
+          <rect width="21" height="4" y="5" fill="#00966e"/>
+          <rect width="21" height="5" y="9" fill="#d62612"/>
+        </svg>
+      </button>
+      <button id="lang-en" aria-label="English" title="English">
+        <svg viewBox="0 0 21 14" width="30" height="20" shape-rendering="crispEdges" aria-hidden="true">
+          <rect width="21" height="14" fill="#b22234"/>
+          <rect width="21" height="2" y="2" fill="#e8e8e8"/>
+          <rect width="21" height="2" y="6" fill="#e8e8e8"/>
+          <rect width="21" height="2" y="10" fill="#e8e8e8"/>
+          <rect width="9" height="8" fill="#3c3b6e"/>
+          <rect x="1" y="1" width="1" height="1" fill="#e8e8e8"/>
+          <rect x="4" y="1" width="1" height="1" fill="#e8e8e8"/>
+          <rect x="7" y="1" width="1" height="1" fill="#e8e8e8"/>
+          <rect x="2.5" y="3" width="1" height="1" fill="#e8e8e8"/>
+          <rect x="5.5" y="3" width="1" height="1" fill="#e8e8e8"/>
+          <rect x="1" y="5" width="1" height="1" fill="#e8e8e8"/>
+          <rect x="4" y="5" width="1" height="1" fill="#e8e8e8"/>
+          <rect x="7" y="5" width="1" height="1" fill="#e8e8e8"/>
+        </svg>
+      </button>
+    </div>
+    <h1>]&amp;"говореща програма"<span class="cursor">█</span></h1>
+    <p class="subtitle lang-bg">Говореща програма от
+    <a href="https://github.com/borislavzahariev"><strong>Борислав Захариев</strong></a> —
+    български синтез на реч за Apple&nbsp;II / Правец-82, възстановен от оригинална
+    дискета от 1980-те и възпроизвеждан цикъл по цикъл във вашия браузър.</p>
+    <p class="subtitle lang-en">Говореща програма от
     <a href="https://github.com/borislavzahariev"><strong>Борислав Захариев</strong></a> —
     Bulgarian text-to-speech for the Apple&nbsp;II / Правец-82, recovered from a
     1980s floppy disk and replayed cycle-for-cycle in your browser.</p>
@@ -38,13 +82,14 @@
   <section class="panel">
     <label for="text">&"ТЕКСТ"</label>
     <textarea id="text" rows="3" spellcheck="false"
-      placeholder="здравей, аз съм правец 82">здравей, аз съм говореща програма</textarea>
+      placeholder="здравей, аз съм правец 82">Говореща програма от Борислав Захариев Приятна работа!</textarea>
 
     <div class="controls">
       <label class="speed">
-        &<span id="speedval">5</span> скорост
+        &<span id="speedval">5</span> <span class="lang-bg">скорост</span><span class="lang-en">speed</span>
         <input type="range" id="speed" min="1" max="9" step="1" value="5">
-        <span class="hint">1 = бързо/високо · 9 = бавно/ниско</span>
+        <span class="hint lang-bg">1 = бързо/високо · 9 = бавно/ниско</span>
+        <span class="hint lang-en">1 = fast/high · 9 = slow/low</span>
       </label>
       <button id="speak" disabled>зареждане…</button>
     </div>
@@ -60,7 +105,7 @@
   </section>
 
   <section class="examples">
-    <span>проба:</span>
+    <span><span class="lang-bg">проба:</span><span class="lang-en">try:</span></span>
     <button class="ex">здравей свят</button>
     <button class="ex">2 + 2 = 4</button>
     <button class="ex">/ра:бо/та</button>
@@ -68,8 +113,8 @@
   </section>
 
   <section class="help">
-    <h2>&I информация</h2>
-    <table>
+    <h2><span class="lang-bg">&I информация</span><span class="lang-en">&I information</span></h2>
+    <table class="lang-bg">
       <tr><td>а-я А-Я</td><td>изговаря се с оригиналните звуци от 1980-те</td></tr>
       <tr><td>интервал</td><td>пауза между думи; <code>,</code> — двойна, <code>_</code> — кратка</td></tr>
       <tr><td>0-9</td><td>нула, едно, две … девет</td></tr>
@@ -77,7 +122,20 @@
       <tr><td><code>/</code> <code>:</code></td><td>повишава / понижава интонацията на следващата буква</td></tr>
       <tr><td>друго</td><td>игнорира се</td></tr>
     </table>
-    <p>The sound is not a recording: the original 6502 player toggled the
+    <table class="lang-en">
+      <tr><td>а-я А-Я</td><td>spoken with the original sampled sounds from the 1980s</td></tr>
+      <tr><td>space</td><td>word pause; <code>,</code> — double, <code>_</code> — short</td></tr>
+      <tr><td>0-9</td><td>spelled out: нула, едно, две … девет</td></tr>
+      <tr><td><code>+ - = . *</code></td><td>плюс, минус, равно, точка, хахаха</td></tr>
+      <tr><td><code>/</code> <code>:</code></td><td>raises / lowers the pitch of the next letter</td></tr>
+      <tr><td>anything else</td><td>ignored</td></tr>
+    </table>
+    <p class="lang-bg">Звукът не е запис: оригиналният 6502 плейър превключва 1-битовия
+    високоговорител на Apple&nbsp;II със съхранени интервали между щракванията. Тази
+    страница изпълнява същия алгоритъм и точните данни от дискетата, компилирани до
+    WebAssembly от <a href="https://github.com/nikolay/govor">Go порта</a> — вижте
+    <a href="https://github.com/nikolay/govor/blob/main/docs/REVERSING.md">бележките по обратното инженерство</a>.</p>
+    <p class="lang-en">The sound is not a recording: the original 6502 player toggled the
     Apple&nbsp;II's 1-bit speaker with stored delays between clicks. This page runs
     the same algorithm and the exact waveform data from the disk, compiled to
     WebAssembly from the <a href="https://github.com/nikolay/govor">Go port</a> —
@@ -85,7 +143,8 @@
   </section>
 
   <footer>
-    <p>© 1980s <a href="https://github.com/borislavzahariev">Борислав Захариев</a> · port &amp; site:
+    <p>© 1980s <a href="https://github.com/borislavzahariev">Борислав Захариев</a> ·
+    <span class="lang-bg">порт и сайт:</span><span class="lang-en">port &amp; site:</span>
     <a href="https://github.com/nikolay/govor">github.com/nikolay/govor</a></p>
   </footer>
 </main>

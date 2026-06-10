@@ -17,6 +17,40 @@ let blobURL = null;
 let waveImage = null; // cached waveform pixels, replayed under the playhead
 let duration = 0; // seconds; from the sample count, available before metadata
 
+// Strings the script sets at runtime; static text is swapped by CSS via
+// body[data-lang] and the .lang-bg/.lang-en classes.
+const STR = {
+  bg: {
+    loading: "зареждане…", speak: "говори", error: "грешка — презареди страницата",
+    play: "пусни", pause: "пауза", download: "⤓ свали .wav", seek: "позиция в записа",
+  },
+  en: {
+    loading: "loading…", speak: "speak", error: "error — reload the page",
+    play: "play", pause: "pause", download: "⤓ download .wav", seek: "playback position",
+  },
+};
+let lang = location.hash === "#en" ? "en" : "bg";
+let speakState = "loading"; // loading | ready | error
+
+function setSpeakState(state) {
+  speakState = state;
+  speakBtn.disabled = state !== "ready";
+  speakBtn.textContent = STR[lang][state === "ready" ? "speak" : state];
+}
+
+function applyLang(l, updateHash) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.body.dataset.lang = l;
+  if (updateHash) history.replaceState(null, "", "#" + l);
+  document.getElementById("lang-bg").classList.toggle("active", l === "bg");
+  document.getElementById("lang-en").classList.toggle("active", l === "en");
+  download.textContent = STR[l].download;
+  seek.setAttribute("aria-label", STR[l].seek);
+  playpause.setAttribute("aria-label", STR[l][player.paused ? "play" : "pause"]);
+  setSpeakState(speakState);
+}
+
 async function loadWasm() {
   const go = new Go();
   let result;
@@ -29,8 +63,7 @@ async function loadWasm() {
     result = await WebAssembly.instantiate(buf, go.importObject);
   }
   go.run(result.instance); // registers govorSynth, then parks in select{}
-  speakBtn.disabled = false;
-  speakBtn.textContent = "говори";
+  setSpeakState("ready");
 }
 
 function speak() {
@@ -47,8 +80,7 @@ function speak() {
     console.error(err);
   }
   if (!wav) {
-    speakBtn.disabled = true;
-    speakBtn.textContent = "грешка — презареди страницата";
+    setSpeakState("error");
     return;
   }
 
@@ -128,7 +160,7 @@ playpause.addEventListener("click", () => {
 });
 player.addEventListener("play", () => {
   playpause.textContent = "❚❚";
-  playpause.setAttribute("aria-label", "пауза");
+  playpause.setAttribute("aria-label", STR[lang].pause);
   playpause.setAttribute("aria-pressed", "true");
   // Reassigning player.src pauses without firing a pause event, so an old
   // tick loop may still be scheduled; cancel it to keep a single loop.
@@ -137,7 +169,7 @@ player.addEventListener("play", () => {
 });
 player.addEventListener("pause", () => {
   playpause.textContent = "►";
-  playpause.setAttribute("aria-label", "пусни");
+  playpause.setAttribute("aria-label", STR[lang].play);
   playpause.setAttribute("aria-pressed", "false");
   paint();
 });
@@ -176,7 +208,14 @@ for (const b of document.querySelectorAll(".ex")) {
   });
 }
 
+document.getElementById("lang-bg").addEventListener("click", () => applyLang("bg", true));
+document.getElementById("lang-en").addEventListener("click", () => applyLang("en", true));
+window.addEventListener("hashchange", () => {
+  applyLang(location.hash === "#en" ? "en" : "bg", false);
+});
+applyLang(lang, false);
+
 loadWasm().catch((err) => {
-  speakBtn.textContent = "грешка при зареждане";
+  setSpeakState("error");
   console.error(err);
 });
