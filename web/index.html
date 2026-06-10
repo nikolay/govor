@@ -3,21 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>говор — българска говореща програма (1980s Apple II / Правец-82)</title>
-<meta name="description" content="Говореща програма от Борислав Захариев — Bulgarian text-to-speech from a 1980s Apple II / Правец-82 disk, running in your browser via WebAssembly.">
-<!-- Social sharing: Facebook & LinkedIn read Open Graph, X reads twitter:* -->
+<title>Говореща програма от Борислав Захариев (1980s Apple II / Правец 82)</title>
+<meta name="description" content="Български синтез на реч от 1980-те — възстановен от оригинална дискета за Apple II / Правец 82 и възпроизвеждан цикъл по цикъл във вашия браузър чрез WebAssembly.">
+<!-- Social sharing: Facebook & LinkedIn read Open Graph, X reads twitter:*.
+     Both allow a single title/description per page, so everything is in
+     Bulgarian — the primary audience; og:locale:alternate only hints that an
+     English UI exists (the #en hash), it can't carry translated text. -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://govor.app/">
-<meta property="og:title" content="говор — българска говореща програма (1980s Apple II / Правец-82)">
-<meta property="og:description" content="Говореща програма от Борислав Захариев — Bulgarian text-to-speech from a 1980s Apple II / Правец-82 disk, running in your browser via WebAssembly.">
+<meta property="og:title" content="Говореща програма от Борислав Захариев (1980s Apple II / Правец 82)">
+<meta property="og:description" content="Български синтез на реч от 1980-те — възстановен от оригинална дискета за Apple II / Правец 82 и възпроизвеждан цикъл по цикъл във вашия браузър чрез WebAssembly.">
 <meta property="og:image" content="https://govor.app/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="bg_BG">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="говор — българска говореща програма (1980s Apple II / Правец-82)">
-<meta name="twitter:description" content="Bulgarian text-to-speech from a 1980s Apple II / Правец-82 disk, running in your browser via WebAssembly.">
+<meta name="twitter:title" content="Говореща програма от Борислав Захариев (1980s Apple II / Правец 82)">
+<meta name="twitter:description" content="Български синтез на реч от 1980-те — възстановен от оригинална дискета за Apple II / Правец 82 и възпроизвеждан цикъл по цикъл във вашия браузър чрез WebAssembly.">
 <meta name="twitter:image" content="https://govor.app/og.png">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🔊</text></svg>">
@@ -71,11 +74,11 @@
     <h1>]&amp;"говореща програма"<span class="cursor">█</span></h1>
     <p class="subtitle lang-bg">Говореща програма от
     <a href="https://github.com/borislavzahariev"><strong>Борислав Захариев</strong></a> —
-    български синтез на реч за Apple&nbsp;II / Правец-82, възстановен от оригинална
+    български синтез на реч за Apple&nbsp;II / Правец 82, възстановен от оригинална
     дискета от 1980-те и възпроизвеждан цикъл по цикъл във вашия браузър.</p>
-    <p class="subtitle lang-en"><span lang="bg">Говореща програма от
-    <a href="https://github.com/borislavzahariev"><strong>Борислав Захариев</strong></a></span> —
-    Bulgarian text-to-speech for the Apple&nbsp;II / Правец-82, recovered from a
+    <p class="subtitle lang-en">Talking Program by
+    <a href="https://github.com/borislavzahariev"><strong>Borislav Zahariev</strong></a> —
+    Bulgarian text-to-speech for the Apple&nbsp;II / Pravetz 82, recovered from a
     1980s floppy disk and replayed cycle-for-cycle in your browser.</p>
   </header>
 
@@ -143,7 +146,8 @@
   </section>
 
   <footer>
-    <p>© 1980s <a href="https://github.com/borislavzahariev">Борислав Захариев</a> ·
+    <p>© 1980s <span class="lang-bg"><a href="https://github.com/borislavzahariev">Борислав Захариев</a></span>
+    <span class="lang-en"><a href="https://github.com/borislavzahariev">Borislav Zahariev</a></span> ·
     <span class="lang-bg">порт и сайт:</span><span class="lang-en">port &amp; site:</span>
     <a href="https://github.com/nikolay/govor">github.com/nikolay/govor</a></p>
   </footer>

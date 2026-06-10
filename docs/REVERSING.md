@@ -2,7 +2,7 @@
 
 `original/GOVOR.dsk` is a 140 KB Apple DOS 3.3 disk image (35 tracks × 16
 sectors × 256 bytes) of „Говореща програма“ — a Bulgarian text-to-speech
-program for the Apple II / Правец-82 by **Борислав Захариев** (credited on the
+program for the Apple II / Правец 82 by **Борислав Захариев** (credited on the
 program's help screen: „говореща програма от Борислав Захариев“).
 
 ## Disk contents
@@ -83,7 +83,7 @@ with arguments `8*speed, 8*speed, 8*speed-1, …, 2`; `WAIT(A)` burns
 
 ## Character set
 
-Text uses the Правец-82 (KOI-7 N2 / МИК) character codes, where `$60`–`$7A`
+Text uses the Правец 82 (KOI-7 N2 / МИК) character codes, where `$60`–`$7A`
 display as Cyrillic. The letter table covers codes `$5B`–`$7F`:
 
 ```

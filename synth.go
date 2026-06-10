@@ -27,7 +27,7 @@ import (
 // the in-text characters '/' and ':' decrement/increment it for the next
 // letter only.
 
-const cpuHz = 1020484.0 // effective Apple II / Pravetz-82 CPU clock
+const cpuHz = 1020484.0 // effective Apple II / Pravetz 82 CPU clock
 
 type segment struct {
 	start, end uint16 // offsets into soundData, [start, end)
@@ -193,7 +193,7 @@ func (s *Synth) pause() {
 	}
 }
 
-// playCode speaks a single Pravetz-82 character code, modelling $086C.
+// playCode speaks a single Pravetz 82 character code, modelling $086C.
 func (s *Synth) playCode(code byte) {
 	switch {
 	case code == 0x20:
@@ -217,7 +217,7 @@ func (s *Synth) playCode(code byte) {
 	s.speed = s.defaultSpeed // LDX #default / STX $09F1 after every letter
 }
 
-// letterCodes maps Bulgarian Cyrillic letters to the Pravetz-82 character
+// letterCodes maps Bulgarian Cyrillic letters to the Pravetz 82 character
 // codes the original program indexes its table with.
 var letterCodes = map[rune]byte{
 	'а': 0x61, 'б': 0x62, 'в': 0x77, 'г': 0x67, 'д': 0x64, 'е': 0x65,

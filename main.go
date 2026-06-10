@@ -1,7 +1,7 @@
 //go:build !js
 
 // govor is a Go port of „Говореща програма“ — a Bulgarian text-to-speech
-// program for the Apple II / Правец-82 by Борислав Захариев, recovered from
+// program for the Apple II / Правец 82 by Борислав Захариев, recovered from
 // an original DOS 3.3 disk image (see original/GOVOR.dsk and docs/).
 package main
 
@@ -20,7 +20,7 @@ func main() {
 	rate := flag.Int("rate", 44100, "output sample rate in Hz")
 	play := flag.Bool("play", false, "play the result through a system audio player")
 	flag.Usage = func() {
-		fmt.Fprintf(flag.CommandLine.Output(), `govor — Bulgarian text-to-speech (Apple II / Правец-82, 1980s) ported to Go
+		fmt.Fprintf(flag.CommandLine.Output(), `govor — Bulgarian text-to-speech (Apple II / Правец 82, 1980s) ported to Go
 
 Usage: govor [flags] [text ...]
 

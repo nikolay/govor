@@ -295,7 +295,7 @@ var soundData = []byte{
 	0x0A, 0x0F, 0x0A, 0x0E, 0x0B, 0x09, 0x17, 0x0D, 0x0A, 0x0E, 0x0A, 0x0F, 0x0A, 0x0A, 0x19, 0x0E, // $1DF0
 }
 
-// segments maps Pravetz-82 character codes $5B-$7F to [start, end)
+// segments maps Pravetz 82 character codes $5B-$7F to [start, end)
 // offsets within soundData (original table at $0B70).
 var segments = map[byte]segment{
 	0x5B: {0x0328, 0x0487}, // ш
