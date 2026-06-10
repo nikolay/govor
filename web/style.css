@@ -50,6 +50,9 @@ h1 {
 .cursor { animation: blink 1.1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* Apple II prompt: no space after "]", just half a character cell of air */
+.prompt { margin-right: 0.5ch; }
+
 .subtitle { color: var(--dim); line-height: 1.5; margin: 0 0 1.5rem; }
 .subtitle strong { color: var(--fg); font-weight: normal; }
 
